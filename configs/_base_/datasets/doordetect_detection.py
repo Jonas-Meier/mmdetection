@@ -28,12 +28,12 @@ test_pipeline = [
         ])
 ]
 
-data = dict(
-    samples_per_gpu=1,
-    workers_per_gpu=2,  # TODO: is batch_size :=  samples_per_gpu * workers_per_gpu ?
+data = dict(  # TODO: is batch_size :=  samples_per_gpu * workers_per_gpu ?
+    samples_per_gpu=1,  # Batch size of a single GPU
+    workers_per_gpu=2,  # Worker to pre-fetch data for each single GPU
     train=dict(
         type='RepeatDataset',
-        times=10,
+        times=12,
         dataset=dict(
             type=dataset_type,
             ann_file=data_root + 'annotations/annotations_train.json',
@@ -52,4 +52,4 @@ data = dict(
         img_prefix=data_root + 'val/pos',
         pipeline=test_pipeline
     ))
-evaluation = dict(interval=1, metric='bbox')
+evaluation = dict(interval=1, metric='bbox')  # evaluation interval in epochs, see mmdet/core/evaluation/eval_hooks.py
