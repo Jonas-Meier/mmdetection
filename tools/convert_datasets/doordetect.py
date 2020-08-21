@@ -39,7 +39,7 @@ def collect_files(img_dir, anno_dir):
     files = []
     # note: os.listdir already gives the relative file names without the whole path before it (exactly as glob.glob would do)
     for img_name in os.listdir(img_dir):    # we could also use glob.glob, but we know we will take every picture in the given directory!
-        suffix = "." + img_name.split(".")[-1]  # find out the suffix of the image (in case they are not equal)
+        suffix = "." + img_name.split(".")[-1]  # image suffixes are often different (.jpg, .JPG, .jpeg, .png, etc.)
         anno_name = img_name.replace(suffix, ".txt")  # adjust the name of the corresponding annotation file (not checked!)
         files.append((
             os.path.join(img_dir, img_name),
