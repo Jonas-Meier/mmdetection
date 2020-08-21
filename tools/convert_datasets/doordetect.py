@@ -75,7 +75,7 @@ def load_img_info(file):
     for annotation_line in annotations_list:  # annos inside the list are each like <class-id> <x> <y> <width> <height>
         id, rel_center_x, rel_center_y, rel_width, rel_height = annotation_line.split(" ")
         assert 0 <= int(id) <= 3, "Found invalid object id: {}".format(id)  # we have four classes
-        #print(id, rel_center_x, rel_center_y, rel_width, rel_height)
+        # print(id, rel_center_x, rel_center_y, rel_width, rel_height)
         # we have yolo format of bounding boxes, convert them to coco format
         x, y, width, height = yolo2coco_bbox(float(rel_center_x), float(rel_center_y), float(rel_width), float(rel_height), img_width, img_height)
         bbox = [
