@@ -29,6 +29,7 @@ import numpy as np
 ID_TO_CLASS = {0: 'door', 1: 'handle', 2: 'cabinet door', 3: 'refrigerator door'}
 CLASS_TO_ID = {'door': 0, 'handle': 1, 'cabinet door': 2, 'refrigerator door': 3}
 
+
 def collect_files(img_dir, anno_dir):
     """
     We do not check whether the corresponding annotation to an image even exist!
@@ -104,20 +105,23 @@ def cvt_annotations(image_infos, out_json_name):
     COCO annotations for object detection are assumed to be in the following format:
     'images': [
         {
-            'file_name': 'xxx',
-            'height': xxx,
-            'width': xxx,
-            'id': xxx
+            'file_name': 'xxx',     # string
+            'height': xxx,          # int
+            'width': xxx,           # int
+            'id': xxx               # int
         },
         ...
     ],
 
     'annotations': [
         {
-            'image_id': xxx,
-            'bbox': [x,y,width,height],     #as floats
-            'category_id': xxx,
-            'id': xxx
+            'segmentation': [[xxx.xx, ..., xxx.xx]] # List(List(floats)) or empty list []
+            'area': xxx.xx                          # float (area of segmentation, bbox otherwise)
+            'iscrowd': 0                            # 0: single object (default), 1: group of objects
+            'image_id': xxx,                        # int
+            'bbox': [x,y,width,height],             # List(floats)
+            'category_id': xxx,                     # int
+            'id': xxx                               # int
         },
         ...
     ]
@@ -141,6 +145,9 @@ def cvt_annotations(image_infos, out_json_name):
         annos = image_info.pop('annos')  # annos was only temporarily saved in image infos!
         out_json['images'].append(image_info)
         for anno in annos:
+            anno['segmentation'] = []  # no segmentation annotations, we set it to be empty
+            anno['iscrowd'] = 0  # only single objects since we have detection task, we should set it nonetheless
+            anno['area'] = anno['bbox'][2] * anno['bbox'][3]  # we set area to be the area of the bbox
             anno['image_id'] = img_id
             anno['id'] = ann_id
             out_json['annotations'].append(anno)
