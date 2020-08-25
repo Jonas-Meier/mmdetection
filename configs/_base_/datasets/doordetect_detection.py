@@ -44,13 +44,13 @@ data = dict(
         )),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/annotations_val.json',
+        ann_file=data_root + 'annotations/annotations_validation.json',
         img_prefix=data_root + 'val/pos',
         pipeline=test_pipeline
     ),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/annotations_val.json',
+        ann_file=data_root + 'annotations/annotations_validation.json',
         img_prefix=data_root + 'val/pos',
         pipeline=test_pipeline
     ))
