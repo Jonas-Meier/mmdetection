@@ -3,9 +3,9 @@ data_root = 'data/door_detect/'  # shall end with a '/'
 # img_norm seems to be default for most datasets
 img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
-    dict(type='LoadImageFromFile'),  # TODO: does this automatically load the images randomly?
+    dict(type='LoadImageFromFile'),
     # LoadImageFromFile creates a CustomDataset, train calls mmdet/datasets/builder.py:build_dataloader() which per
-    # default shuffles the dataset each epoch
+    # default shuffles the dataset each epoch, so it automatically reads images at random
     dict(type='LoadAnnotations', with_bbox=True),
     dict(type='Resize', img_scale=(1024, 768), keep_ratio=True),  # most images are around 1024x768px
     dict(type='RandomFlip', flip_ratio=0.5),
@@ -31,11 +31,11 @@ test_pipeline = [
 ]
 
 data = dict(
-    samples_per_gpu=1,  # Batch size of a single GPU (bs=1)
+    samples_per_gpu=4,  # Batch size of a single GPU (bs=4)
     workers_per_gpu=2,  # Worker to pre-fetch data for each single GPU
     train=dict(
         type='RepeatDataset',
-        times=12,
+        times=2,  # old: 8. For ONE epoch, the dataset will be repeated 'times' times
         dataset=dict(
             type=dataset_type,
             ann_file=data_root + 'annotations/annotations_train.json',
@@ -45,13 +45,13 @@ data = dict(
     val=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations/annotations_validation.json',
-        img_prefix=data_root + 'val/pos',
+        img_prefix=data_root + 'validation/pos',
         pipeline=test_pipeline
     ),
     test=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations/annotations_validation.json',
-        img_prefix=data_root + 'val/pos',
+        img_prefix=data_root + 'validation/pos',
         pipeline=test_pipeline
     ))
 evaluation = dict(interval=1, metric='bbox')  # evaluation (with validation set) interval in epochs,

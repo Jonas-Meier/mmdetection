@@ -4,8 +4,9 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 model = dict(
-    pretrained=None,  # ImageNet pretrained backbone to be loaded. Not necessary since we use pretrained coco model
-        # (e.g. 'torchvision://resnet50' or 'torchvision://resnet101')
+    pretrained=None,
+    # ImageNet pretrained backbone to be loaded. Not necessary since we use pretrained coco model
+    # (e.g. 'torchvision://resnet50' or 'torchvision://resnet101')
     # backbone=dict(),
     # neck=dict(),
     # rpn_head=dict(),
@@ -26,7 +27,7 @@ model = dict(
             loss_bbox=dict(type='L1Loss', loss_weight=1.0)))  # TODO: maybe use SmoothL1Loss with beta=1.0 ?
 )
 # optimizer. lr=0.02 is for bs=16! More types at 'mmdet/core/optimizer/default_constructor.py'
-optimizer = dict(type='SGD', lr=0.00125, momentum=0.9, weight_decay=0.0001)  # 0.00125=0.02/16: we have bs=1, not 16!
+optimizer = dict(type='SGD', lr=0.005, momentum=0.9, weight_decay=0.0001)  # 0.005=0.02/4: we have bs=4, not 16!
 optimizer_config = dict(grad_clip=None)  # Most methods do not use gradient clipping
 # learning policy
 lr_config = dict(  # Learning rate scheduler config used to register LrUpdater hook
@@ -34,8 +35,10 @@ lr_config = dict(  # Learning rate scheduler config used to register LrUpdater h
     warmup='linear',  # The warmup policy, also support `exp` and `constant`
     warmup_iters=500,  # The number of iterations for warmup
     warmup_ratio=0.001,  # The ratio of the starting learning rate used for warmup
-    step=[8, 11])  # Steps to decay the learning rate
-total_epochs = 12  # Total epochs to train the model TODO: 1 epoch = 1 whole dataset? epochs == times dataset repeated?
+    step=[2, 4])  # Steps to decay the learning rate, old: [8, 11]
+total_epochs = 5  # Total epochs to train the model, old: 12
+# TODO: 1 epoch = 1 whole dataset? epochs == times dataset repeated? -> Each epoch repeats 'times' the dataset!!!
+# Therefore: 1 epoch = 'times' x dataset. Total dataset repetitions: 'total_epochs' x 'times'
 checkpoint_config = dict(  # Config to set the checkpoint hook, see: 'mmcv/runner/hooks/checkpoint.py'
     interval=1)  # The save interval is 1
 log_config = dict(  # config to register logger hook
