@@ -4,7 +4,7 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 model = dict(
-    pretrained=None,
+    pretrained='./models/imagenet/resnet50-19c8e357.pth',  # None
     # ImageNet pretrained backbone to be loaded. Not necessary since we use pretrained coco model
     # (e.g. 'torchvision://resnet50' or 'torchvision://resnet101')
     # backbone=dict(),
@@ -53,8 +53,8 @@ log_level = 'INFO'  # The level of logging.
 # load models as a pre-trained model from a given path. This will not resume training.
 # Here, a COCO pretrained model.
 # load_from = 'https://open-mmlab.s3.ap-northeast-2.amazonaws.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_1x_coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth'  # noqa
-load_from = './models/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth'  # saved locally
+#load_from = './models/coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth'  # saved locally
 resume_from = None  # Resume checkpoints from a given path, the training will be resumed from the epoch when the checkpoint's is saved.
 # workflow = [('train', 1)]  # Workflow for runner. [('train', 1)] means there is only one workflow and the workflow
 # named 'train' is executed once. The workflow trains the model by 12 epochs according to the total_epochs.
-work_dir = './workdirs/doordetect_v1'  # Directory to save the model checkpoints and logs for the current experiments.
+work_dir = './workdirs/doordetect_v1_2'  # Directory to save the model checkpoints and logs for the current experiments.
