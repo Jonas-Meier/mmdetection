@@ -64,6 +64,9 @@ model = dict(
         ]))
 
 # Checkpoint and logging configs are already set in 'default_runtime.py'
-
+# Learning rate config and total epochs are already set in 'schedule_1x.py'
+# TODO: Unintentionally, the lr has been left at 0.02 which is meant for bs=16(8GPUs,2imgs per GPU)
+#  but we only have bs=4=1x4
+# TODO: Best result is after 9 epochs. Number of epochs with 1x schedule is 12! Maybe reduce maximum and decay steps?
 work_dir = './workdirs/doordetect_v3_1'  # Directory to save the model checkpoints and logs for the current experiments.
 load_from = None  # './models/coco/......'

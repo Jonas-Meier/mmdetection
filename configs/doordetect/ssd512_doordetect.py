@@ -1,6 +1,7 @@
 _base_ = 'ssd300_doordetect.py'
 input_size = 512
 model = dict(
+    # TODO: ImageNet pretrained model actually diverges whereas the coco pretrained model performs well
     pretrained=None,  # './models/imagenet/vgg16-397923af.pth',  # alternative is 'vgg19-dcbb9e9d.pth' in same directory
     backbone=dict(input_size=input_size),
     bbox_head=dict(
